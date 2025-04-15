@@ -1,27 +1,64 @@
-## Breast Cancer Types Prediction
+# Breast Cancer Prediction using Machine Learning
 
-Breast cancer is one of the most prevalent cancers among women globally, accounting for approximately 25% of all cancer cases. In 2015 alone, over 2.1 million people were affected. Early and accurate detection of breast cancer is critical to improve treatment outcomes and survival rates. 
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.0%2B-orange)
+![Pandas](https://img.shields.io/badge/Pandas-1.3%2B-lightgrey)
+![Plotly](https://img.shields.io/badge/Plotly-5.0%2B-green)
 
-This project focuses on developing a **machine learning model** to classify breast tumors as **malignant (cancerous)** or **benign (non-cancerous)** based on a dataset containing various clinical features of breast tumors. 
+A machine learning project to classify breast tumors as **malignant (cancerous)** or **benign (non-cancerous)** using clinical features. Achieves **>97% accuracy** with optimized models.
 
-### Key Highlights:
-- Utilizes supervised learning techniques to build and evaluate predictive models.
-- Analyzes features related to tumor characteristics to determine their impact on diagnosis.
-- Addresses challenges of feature selection, multicollinearity, and model interpretability.
+## 📌 Project Overview
+Breast cancer is the most common cancer among women worldwide. Early detection significantly improves survival rates. This project:
+- Preprocesses clinical tumor data (handling outliers, scaling, feature selection).
+- Trains and compares **5 ML models** (Decision Tree, KNN, Naïve Bayes, MLP, SVM).
+- Identifies key diagnostic features and evaluates model performance.
 
-### Dataset Description:
-The dataset contains records of breast tumor diagnoses, labeled as:
-- **M (Malignant)**: Cancerous tumors.
-- **B (Benign)**: Non-cancerous tumors.
+## 📂 Dataset
+**Source**: [Breast Cancer Wisconsin (Diagnostic) Dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic))  
+**Features**:  
+- 30 numerical features (e.g., `radius_mean`, `texture_mean`, `smoothness_se`)  
+- Target: `diagnosis` (Malignant=1, Benign=0)  
 
-Each record includes several numerical features derived from image analysis of the tumors. These features represent important diagnostic measurements.
+## 🛠️ Workflow
+### 1. Data Preprocessing
+- **Handled Missing Values**
+- **Feature Engineering**:
+  - Encoded target: `M` → 1 (Malignant), `B` → 0 (Benign).
+  - Standardized features using `StandardScaler`.
+- **Outlier Treatment**: Replaced outliers with KNN-imputed values.
+- **Feature Selection**: Dropped highly correlated features (threshold=0.8).
 
-### Objectives:
-1. Preprocess and explore the dataset to identify patterns and relationships.
-2. Apply various machine learning models to classify tumors.
-3. Evaluate the models using performance metrics such as accuracy, precision, recall, and F1-score.
-4. Provide insights into the most significant features contributing to the classification.
+### 2. Model Training & Evaluation
+Trained 5 models using **GridSearchCV** for hyperparameter tuning:
 
-### Libraries Used:
+| Model               | Best Parameters                              | Test Accuracy |
+|---------------------|---------------------------------------------|---------------|
+| Decision Tree       | `max_depth=4`, `criterion='gini'`           | 95.61%        |
+| KNN                 | `n_neighbors=9`, `metric='manhattan'`       | 97.37%        |
+| Naïve Bayes         | Default                                     | 94.74%        |
+| MLP                 | `hidden_layer_sizes=(20,)`, `alpha=0.1`     | 97.37%        |
+| SVM                 | `C=10`, `kernel='rbf'`, `gamma=0.01`        | 98.25%        |
 
-### Model:
+
+### 3. Feature Importance
+Top 5 influential features across models:  
+1. `concave points_worst` (Decision Tree)  
+2. `radius_worst` (SVM)  
+3. `perimeter_worst` (KNN)  
+4. `concavity_mean` (Naïve Bayes)  
+5. `area_se` (MLP)  
+
+
+
+## 📦 Saved Models
+Pre-trained models available in `models/`:
+- `decision_tree_model.pkl`
+- `svm_model.pkl` (Best performer)
+
+## 📊 Results Summary
+| Model       | Accuracy | Precision | Recall | F1-Score |
+|-------------|----------|-----------|--------|----------|
+| SVM         | 98.25%   | 98.04%    | 98.25% | 98.14%   |
+| MLP         | 97.37%   | 97.22%    | 97.37% | 97.29%   |
+| KNN         | 97.37%   | 96.55%    | 97.37% | 96.95%   |
+
